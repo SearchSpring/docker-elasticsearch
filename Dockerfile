@@ -20,7 +20,7 @@ RUN \
 
 # Install head and bigdesk
 RUN \
-	cd /usr/local/elasticsearch-1.1.1 && \
+	cd /usr/local/elasticsearch && \
 	bin/plugin --install mobz/elasticsearch-head && \
 	bin/plugin --install lukas-vlcek/bigdesk
 
