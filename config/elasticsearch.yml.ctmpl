@@ -1,0 +1,56 @@
+################################### Cluster ###################################
+
+cluster.name: {{key "elasticsearch/clustername"}}
+
+#################################### Node #####################################
+
+node.name: elasticsearch-node
+node.max_local_storage_nodes: 1
+
+#################################### Index ####################################
+
+index.mapper.dynamic: true
+action.auto_create_index: true
+action.disable_delete_all_indices: true
+
+#################################### Paths ####################################
+
+path.conf: /usr/local/elasticsearch
+path.data: {{key "elasticsearch/data"}}
+path.logs: /var/log/elasticsearch
+
+#################################### Plugin ###################################
+
+
+################################### Memory ####################################
+
+bootstrap.mlockall: true
+
+############################## Network And HTTP ###############################
+
+http.port: {{key "elasticsearch/port"}}
+
+################################### Gateway ###################################
+
+gateway.expected_nodes: {{key "elasticsearch/expected_nodes"}}
+
+############################# Recovery Throttling #############################
+
+
+################################## Discovery ##################################
+
+
+################################## Slow Log ###################################
+
+
+################################## GC Logging #################################
+
+
+################################## JMX ########################################
+
+
+################################## Custom #####################################
+
+action.auto_create_index: false
+node.data: true
+script.disable_dynamic: false
