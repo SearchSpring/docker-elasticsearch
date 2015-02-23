@@ -1,6 +1,6 @@
 #!/bin/bash
 
-CON=http://consul.service.consul:8500/v1/kv/elasticsearch
+CON=http://consul.service.consul:8500/v1/kv/${CLUSTERNAME}
 sleep 1
 host ${CONSUL_HOST} >/dev/null 2>&1
 if [ $? -eq 0 ]; then

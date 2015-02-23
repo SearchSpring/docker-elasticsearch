@@ -1,6 +1,6 @@
 ################################### Cluster ###################################
 
-cluster.name: {{key "elasticsearch/clustername"}}
+cluster.name: {{ env "CLUSTERNAME" | printf "%s/clustername" | key }}
 
 #################################### Node #####################################
 
@@ -16,7 +16,7 @@ action.disable_delete_all_indices: true
 #################################### Paths ####################################
 
 path.conf: /usr/local/elasticsearch
-path.data: {{key "elasticsearch/data"}}
+path.data: {{ env "CLUSTERNAME" | printf "%s/data" | key }}
 path.logs: /var/log/elasticsearch
 
 #################################### Plugin ###################################
@@ -28,11 +28,11 @@ bootstrap.mlockall: true
 
 ############################## Network And HTTP ###############################
 
-http.port: {{key "elasticsearch/port"}}
+http.port: {{ env "CLUSTNAME" | printf "%s/port"  | key }}
 
 ################################### Gateway ###################################
 
-gateway.expected_nodes: {{key "elasticsearch/expected_nodes"}}
+gateway.expected_nodes: {{ env "CLUSTERNAME" | printf "%s/expected_nodes"  | key }}
 
 ############################# Recovery Throttling #############################
 
