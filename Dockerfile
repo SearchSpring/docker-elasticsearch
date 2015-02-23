@@ -3,7 +3,7 @@ FROM centos:centos6
 
 # Set Java and ES versions
 ENV JAVA_VER 1.7.0
-ENV ES_VER 1.3.4
+ENV ES_VER 1.4.0
 # Set Consul-Template version
 ENV CT_VER 0.7.0
 
