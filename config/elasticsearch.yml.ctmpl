@@ -1,6 +1,6 @@
 ################################### Cluster ###################################
 
-cluster.name: elasticsearch-cluster
+cluster.name: {{ env "CLUSTERNAME" | printf "%s/clustername" | key }}
 
 #################################### Node #####################################
 
@@ -16,7 +16,7 @@ action.disable_delete_all_indices: true
 #################################### Paths ####################################
 
 path.conf: /usr/local/elasticsearch
-path.data: /data
+path.data: {{ env "CLUSTERNAME" | printf "%s/data" | key }}
 path.logs: /var/log/elasticsearch
 
 #################################### Plugin ###################################
@@ -28,18 +28,28 @@ bootstrap.mlockall: true
 
 ############################## Network And HTTP ###############################
 
-http.port: 9200
+http.port: {{ env "CLUSTNAME" | printf "%s/port"  | key }}
 
 ################################### Gateway ###################################
 
-gateway.expected_nodes: 1
+gateway.expected_nodes: {{ env "CLUSTERNAME" | printf "%s/expected_nodes"  | key }}
 
 ############################# Recovery Throttling #############################
 
 
 ################################## Discovery ##################################
 
+
 discovery.zen.ping.multicast.enable: false
+{{ $port := env "PORT" }}
+{{ $envname := printf "SERVICE_%s_NAME" $port  }}
+{{ $servicename := env $envname }}
+discovery.zen.ping.unicast.hosts: [
+{{range service $servicename }}
+"{{.Name}}:{{.Port}}",
+{{end}}
+]
+
 
 ################################## Slow Log ###################################
 
@@ -55,4 +65,3 @@ discovery.zen.ping.multicast.enable: false
 action.auto_create_index: false
 node.data: true
 script.disable_dynamic: false
-
