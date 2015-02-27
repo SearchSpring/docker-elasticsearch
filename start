@@ -10,7 +10,11 @@ if [ $? -eq 0 ]; then
 	curl -X PUT ${CON}/expected_nodes -d ${EXPECTED_NODES}
 	curl -X PUT ${CON}/version -d ${ES_VER}
 	sleep 1
-	/bin/consul-template -consul ${CONSUL_HOST}:8500 -template /templates/elasticsearch.yml.ctmpl:/usr/local/elasticsearch/config/elasticsearch.yml -once 
+	/bin/consul-template \
+		-consul ${CONSUL_HOST}:8500 \
+		-template "/templates/elasticsearch.yml.ctmpl:/usr/local/elasticsearch/config/elasticsearch.yml" \
+		-retry 30s \
+		-once 
 fi
 
 exec "$@"

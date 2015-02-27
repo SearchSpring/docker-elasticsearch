@@ -39,6 +39,7 @@ gateway.expected_nodes: 1
 
 ################################## Discovery ##################################
 
+discovery.zen.ping.multicast.enable: false
 
 ################################## Slow Log ###################################
 

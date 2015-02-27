@@ -40,6 +40,17 @@ gateway.expected_nodes: {{ env "CLUSTERNAME" | printf "%s/expected_nodes"  | key
 ################################## Discovery ##################################
 
 
+discovery.zen.ping.multicast.enable: false
+{{ $port := env "PORT" }}
+{{ $envname := printf "SERVICE_%s_NAME" $port  }}
+{{ $servicename := env $envname }}
+discovery.zen.ping.unicast.hosts: [
+{{range service $servicename }}
+"{{.Name}}:{{.Port}}",
+{{end}}
+]
+
+
 ################################## Slow Log ###################################
 
 
