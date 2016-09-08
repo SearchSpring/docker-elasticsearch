@@ -10,13 +10,13 @@ node.max_local_storage_nodes: 1
 #################################### Index ####################################
 
 index.mapper.dynamic: true
-action.auto_create_index: true
+action.auto_create_index: false
 action.disable_delete_all_indices: true
 
 #################################### Paths ####################################
 
-path.conf: /usr/local/elasticsearch
-path.data: /data
+path.conf: /usr/share/elasticsearch/config
+path.data: /var/lib/elasticsearch
 path.logs: /var/log/elasticsearch
 
 #################################### Plugin ###################################
@@ -51,7 +51,5 @@ gateway.expected_nodes: 1
 
 ################################## Custom #####################################
 
-action.auto_create_index: false
 node.data: true
-script.disable_dynamic: false
-
+network.host: 0.0.0.0
