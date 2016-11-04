@@ -7,7 +7,6 @@ ENV \
 # https://www.elastic.co/guide/en/elasticsearch/guide/current/heap-sizing.html
   ES_HEAP_SIZE=1g \
   CLUSTERNAME=elasticsearch \
-  NODENAME=${HOSTNAME} \
   MIN_MASTER_NODES=2 \
 # https://www.elastic.co/guide/en/elasticsearch/plugins/5.0/discovery-ec2-discovery.html
   DISCOVERY_GROUPS=elasticsearch \
