@@ -1,10 +1,9 @@
 ################################### Cluster ###################################
 
-cluster.name: elasticsearch-cluster
-
+cluster.name: {{ .Env.CLUSTERNAME }} 
 #################################### Node #####################################
 
-node.name: elasticsearch-node
+node.name: {{ .Env.NODENAME }}
 node.max_local_storage_nodes: 1
 
 #################################### Index ####################################
@@ -40,6 +39,16 @@ gateway.expected_nodes: 1
 ################################## Discovery ##################################
 
 
+discovery.zen.minimum_master_nodes: {{ .Env.MIN_MASTER_NODES }}
+discovery.zen.ping.multicast.enabled: false
+
+discovery.ec2.type: ec2
+discovery.ec2.groups: {{ .Env.DISCOVERY_GROUPS }}
+discovery.ec2.host_type: {{ .Env.DISCOVERY_HOSTYPE }}
+discovery.ec2.availability_zones: {{ .Env.DISCOVERY_AZ }}
+discovery.ec2.any_group: {{ .Env.DISCOVERY_ANY_GROUP }}
+discovery.ec2.node_cache_time: {{ .Env.DISCOVERY_NODE_CACHE_TIME }}
+
 ################################## Slow Log ###################################
 
 
@@ -51,5 +60,6 @@ gateway.expected_nodes: 1
 
 ################################## Custom #####################################
 
-node.data: true
+node.data: {{ .Env.DATANODE }}
+node.master: {{ .Env.MASTERNODE }}
 network.host: 0.0.0.0

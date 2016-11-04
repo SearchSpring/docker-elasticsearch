@@ -1,37 +1,25 @@
-FROM centos:centos6
+FROM searchspring/elasticsearch_2_4_1
 
-# Update and Install Dependencies
+COPY templates /templates
+COPY docker/*.sh /usr/local/bin/
+
 ENV \
-	JAVAVER="1.8.0" \
-	ESVER="2.3.5"
+# https://www.elastic.co/guide/en/elasticsearch/guide/current/heap-sizing.html
+  ES_HEAP_SIZE=1g \
+  CLUSTERNAME=elasticsearch \
+  NODENAME=${HOSTNAME} \
+  MIN_MASTER_NODES=2 \
+# https://www.elastic.co/guide/en/elasticsearch/plugins/5.0/discovery-ec2-discovery.html
+  DISCOVERY_GROUPS=elasticsearch \
+  DISCOVERY_HOSTYPE=private_ip \
+  DISCOVERY_AZ=us-east-1 \
+  DISCOVERY_ANY_GROUP=true \
+  DISCOVERY_NODE_CACHE_TIME=10s \
+  DATANODE=true \
+  MASTERNODE=false
 
-RUN \
-	yum update -y && \
-	yum install -y \
-	java-${JAVAVER}-openjdk-devel.x86_64 \
-	tar
 
-# Set Java Home
-ENV JAVA_HOME /usr/lib/jvm/jre-${JAVAVER}-openjdk.x86_64
+ENTRYPOINT [ "/usr/local/bin/entrypoint.sh" ]
 
-# Install Elasticsearch
-RUN rpm -ihv https://download.elastic.co/elasticsearch/release/org/elasticsearch/distribution/rpm/elasticsearch/${ESVER}/elasticsearch-${ESVER}.rpm
+CMD ["elasticsearch"]
 
-# Install head
-RUN /usr/share/elasticsearch/bin/plugin install mobz/elasticsearch-head
-
-VOLUME /var/lib/elasticsearch
-
-# Make directory for scripts
-RUN	mkdir -p /usr/share/elasticsearch/config/scripts
-
-# Mount elasticsearch.yml config
-ADD config/elasticsearch.yml /usr/share/elasticsearch/config/elasticsearch.yml
-
-USER elasticsearch
-
-# Define default command.
-ENTRYPOINT [ "/usr/share/elasticsearch/bin/elasticsearch" ]
-
-# Expose http port
-EXPOSE 9200
