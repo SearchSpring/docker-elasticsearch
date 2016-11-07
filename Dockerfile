@@ -11,7 +11,8 @@ ENV \
 # https://www.elastic.co/guide/en/elasticsearch/plugins/5.0/discovery-ec2-discovery.html
   DISCOVERY_GROUPS=elasticsearch \
   DISCOVERY_HOSTYPE=private_ip \
-  DISCOVERY_AZ=us-east-1 \
+  DISCOVERY_REGION=us-east-1 \
+  DISCOVERY_AZ=us-east-1b \
   DISCOVERY_ANY_GROUP=true \
   DISCOVERY_NODE_CACHE_TIME=10s \
   DATANODE=true \

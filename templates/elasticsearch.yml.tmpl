@@ -43,6 +43,8 @@ discovery.zen.minimum_master_nodes: {{ .Env.MIN_MASTER_NODES }}
 discovery.zen.ping.multicast.enabled: false
 discovery.type: ec2
 
+cloud.aws.region: {{ .Env.DISCOVERY_REGION }}
+
 discovery.ec2.groups: {{ .Env.DISCOVERY_GROUPS }}
 discovery.ec2.host_type: {{ .Env.DISCOVERY_HOSTYPE }}
 discovery.ec2.availability_zones: {{ .Env.DISCOVERY_AZ }}
