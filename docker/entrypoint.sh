@@ -30,7 +30,7 @@ MIN_MASTER_NODES=`echo $ES_NUM_MASTER_NODES / 2 + 1 | bc`
 export MIN_MASTER_NODES
 
 dockerize \
-  -tempalte=/templates/elasticsearch.yml.erb:/usr/share/elasticsearch/config/elasticsearch.yml
+  -template=/templates/elasticsearch.yml.erb:/usr/share/elasticsearch/config/elasticsearch.yml
 
 
 exec "$@"
