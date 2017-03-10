@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 set -e
-echo $* 1>$2
+echo $* 1>&2
 
 # Grab the UUID for the service of the ES masters
 if [[ $DOCKERCLOUD_SERVICE_HOSTNAME =~ .*-masters ]]
