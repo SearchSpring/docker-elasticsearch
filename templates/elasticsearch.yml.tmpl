@@ -41,15 +41,7 @@ gateway.expected_nodes: 1
 
 discovery.zen.minimum_master_nodes: {{ .Env.MIN_MASTER_NODES }}
 discovery.zen.ping.multicast.enabled: false
-discovery.type: ec2
-
-cloud.aws.region: {{ .Env.DISCOVERY_REGION }}
-
-discovery.ec2.groups: {{ .Env.DISCOVERY_GROUPS }}
-discovery.ec2.host_type: {{ .Env.DISCOVERY_HOSTYPE }}
-discovery.ec2.availability_zones: {{ .Env.DISCOVERY_AZ }}
-discovery.ec2.any_group: {{ .Env.DISCOVERY_ANY_GROUP }}
-discovery.ec2.node_cache_time: {{ .Env.DISCOVERY_NODE_CACHE_TIME }}
+discovery.zen.ping.unicast.hosts: {{ .Env.ES_MASTER_NODES }}
 
 ################################## Slow Log ###################################
 
