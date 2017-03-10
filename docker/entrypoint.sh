@@ -3,7 +3,7 @@ set -e
 echo $* 1>&2
 
 # Grab the UUID for the service of the ES masters
-if [[ $DOCKERCLOUD_SERVICE_HOSTNAME =~ .*-masters ]]
+if [[ $DOCKERCLOUD_SERVICE_HOSTNAME =~ .*-masters ]]; then
   DOCKER_MASTER_SERVICE_NAME=${DOCKER_MASTER_SERVICE_NAME}
 else
   DOCKER_MASTER_SERVICE_NAME=${DOCKER_MASTER_SERVICE_NAME}-masters
