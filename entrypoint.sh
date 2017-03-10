@@ -31,3 +31,6 @@ export MIN_MASTER_NODES
 
 dockerize \
   -tempalte=/templates/elasticsearch.yml.erb:/usr/share/elasticsearch/config/elasticsearch.yml
+
+
+exec "$@"
