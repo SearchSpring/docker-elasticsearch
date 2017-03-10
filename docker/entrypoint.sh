@@ -1,27 +1,36 @@
 #!/usr/bin/env bash
-
-source ./docker-entrypoint.sh
-
-dockerize -template /templates/elasticsearch.yml.tmpl:/usr/share/elasticsearch/config/elasticsearch.yml echo -e "Starting Elasticsearch\n\n"
 set -e
+echo $* 1>$2
 
-# Add elasticsearch as command if needed
-if [ "${1:0:1}" = '-' ]; then
-  set -- elasticsearch "$@"
+# Grab the UUID for the service of the ES masters
+if [[ $DOCKERCLOUD_SERVICE_HOSTNAME =~ .*-masters ]]
+  DOCKER_MASTER_SERVICE_NAME=${DOCKER_MASTER_SERVICE_NAME}
+else
+  DOCKER_MASTER_SERVICE_NAME=${DOCKER_MASTER_SERVICE_NAME}-masters
 fi
+ES_MASTER_SERVICE_UUID=`\
+  curl -s -u $DOCKERCLOUD_AUTH ${DOCKERCLOUD_REST_HOST}/api/app/v1/${ORG_NAME}/service/ |\
+  jq '.objects[] | .uuid +" "+ .name ' |\
+  egrep $DOCKER_MASTER_SERVICE_NAME |\
+  sed 's/"//g' |\
+  awk '{print $1}'`
+# Grab the IPs for the master nodes 
+ES_MASTER_NODES=`\
+  curl -s -u $DOCKERCLOUD_AUTH ${DOCKERCLOUD_REST_HOST}/api/app/v1/${ORG_NAME}/service/${ES_MASTER_SERVICE_UUID}/ |\
+  jq '.containers[]' |\
+  xargs -I URI curl -s -u $DOCKERCLOUD_AUTH ${DOCKERCLOUD_REST_HOST}/URI |\
+  jq '.private_ip' |\
+  perl -e '@p = map { s/"//g; $_}<>; chomp @p; print join ", ", @p;'`
 
-# Drop root privileges if we are running elasticsearch
-# allow the container to be started with `--user`
-if [ "$1" = 'elasticsearch' -a "$(id -u)" = '0' ]; then
-  # Change the ownership of /usr/share/elasticsearch/data to elasticsearch
-  chown -R elasticsearch:elasticsearch /usr/share/elasticsearch/data
-  
-  set -- gosu elasticsearch "$@"
-  #exec gosu elasticsearch "$BASH_SOURCE" "$@"
-fi
+# Calculate the correct number for MIN_MASTER_NODES
+# Half the number of master nodes plus one
+export ES_MASTER_NODES
+ES_NUM_MASTER_NODES=`echo $ES_MASTER_NODES | wc -w`
+MIN_MASTER_NODES=`echo $ES_NUM_MASTER_NODES / 2 + 1 | bc`
+export MIN_MASTER_NODES
 
-# As argument is not related to elasticsearch,
-# then assume that user wants to run his own process,
-# for example a `bash` shell to explore this image
+dockerize \
+  -tempalte=/templates/elasticsearch.yml.erb:/usr/share/elasticsearch/config/elasticsearch.yml
+
 
 exec "$@"

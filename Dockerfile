@@ -10,12 +10,6 @@ ENV \
   DATANODE=true \
   MASTERNODE=false
 
-RUN mkdir /templates
-
-COPY templates/* /templates
-COPY entrypoint.sh /usr/loca/bin/
-
-
 ENTRYPOINT [ "/usr/local/bin/entrypoint.sh" ]
 
 CMD ["elasticsearch"]
