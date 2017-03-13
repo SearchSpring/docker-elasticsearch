@@ -2,6 +2,10 @@
 set -e
 echo $* 1>&2
 
+
+echo -e "# allow user 'elasticsearch' mlockall\nelasticsearch soft memlock unlimited\nelasticsearch hard memlock unlimited" >> /etc/sysctl.d/local.conf
+
+
 # Grab the UUID for the service of the ES masters
 if [[ $DOCKERCLOUD_SERVICE_HOSTNAME =~ .*-masters ]]; then
   DOCKER_MASTER_SERVICE_NAME=${DOCKERCLOUD_SERVICE_HOSTNAME}
