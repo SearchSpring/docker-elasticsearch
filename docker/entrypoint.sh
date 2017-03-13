@@ -3,7 +3,7 @@ set -e
 echo $* 1>&2
 
 
-echo -e "# allow user 'elasticsearch' mlockall\nelasticsearch soft memlock unlimited\nelasticsearch hard memlock unlimited" >> /etc/sysctl.d/local.conf
+echo -e "# allow user 'elasticsearch' mlockall\nelasticsearch soft memlock unlimited\nelasticsearch hard memlock unlimited" >> /etc/security/limits.d/elasticsearch.conf
 
 
 # Grab the UUID for the service of the ES masters
