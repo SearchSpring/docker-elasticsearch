@@ -40,5 +40,5 @@ curl -s -H "Authorization: $DOCKERCLOUD_AUTH" -H "Accept: application/json" \
 	-XPOST
 
 # Remove exclude
-curl -s -XPUT "http://${ES_SERVICE_NAME}:9200/_cluster/settings" 
+curl -s -XPUT "http://${ES_SERVICE_NAME}:9200/_cluster/settings" \
 	-d "{ \"transient\" : { \"cluster.routing.allocation.exclude._ip\" : \"\" } }"
