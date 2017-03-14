@@ -19,15 +19,15 @@ if [[ ! -z $ORG_NAME ]]; then
 	export $ORG_NAME
 fi
 
-CURL_OPTIONS="-s -H \"Authorization: $DOCKERCLOUD_AUTH\" -H \"Accept: application/json\""
-
+# UUID for the master service
 ES_MASTER_SERVICE_UUID=`\
   curl -s -H "Authorization: $DOCKERCLOUD_AUTH" -H "Accept: application/json" ${DOCKERCLOUD_REST_HOST}/api/app/v1/${ORG_NAME}service/?limit=250 |\
   jq '.objects[] | .uuid +" "+ .name ' |\
   egrep $DOCKER_MASTER_SERVICE_NAME |\
   sed 's/"//g' |\
   awk '{print $1}'`
-# Grab the IPs for the master nodes 
+
+# IPs for the master nodes 
 ES_MASTER_NODES=`\
   curl -s -H "Authorization: $DOCKERCLOUD_AUTH" -H "Accept: application/json" ${DOCKERCLOUD_REST_HOST}/api/app/v1/${ORG_NAME}service/${ES_MASTER_SERVICE_UUID}/ |\
   jq '.containers[]' |\
