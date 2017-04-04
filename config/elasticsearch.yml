@@ -53,3 +53,5 @@ gateway.expected_nodes: 1
 
 node.data: true
 network.host: 0.0.0.0
+action.auto_create_index: false
+script.disable_dynamic: false
