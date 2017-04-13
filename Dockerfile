@@ -1,5 +1,7 @@
 FROM searchspring/elasticsearch_1_7_6
 
+RUN /usr/share/elasticsearch/bin/plugin install elasticsearch/elasticsearch-lang-mvel/1.7.0
+
 COPY templates /templates
 COPY docker/*.sh /usr/local/bin/
 
