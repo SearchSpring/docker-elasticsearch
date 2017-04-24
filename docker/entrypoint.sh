@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-source ./docker-entrypoint.sh
-
 dockerize -template /templates/elasticsearch.yml.tmpl:/usr/share/elasticsearch/config/elasticsearch.yml echo -e "Starting Elasticsearch\n\n"
 set -e
 
