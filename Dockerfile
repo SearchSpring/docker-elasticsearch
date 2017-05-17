@@ -1,4 +1,4 @@
-FROM searchspring/elasticsearch_1_3
+FROM searchspring/elasticsearch_1_3_4
 
 COPY templates /templates
 COPY docker/*.sh /usr/local/bin/
