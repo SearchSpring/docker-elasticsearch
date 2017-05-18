@@ -10,8 +10,7 @@ ENV \
   DATANODE=true \
   MASTERNODE=false
 
-VOLUME /var/lib/elasticsearch
-VOLUME /var/log/elasticsearch
+VOLUME /usr/share/elasticsearch
 
 ENTRYPOINT [ "/usr/local/bin/entrypoint.sh" ]
 
