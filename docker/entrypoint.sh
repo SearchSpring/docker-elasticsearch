@@ -2,9 +2,9 @@
 set -e
 echo $* 1>&2
 
-
 echo -e "# allow user 'elasticsearch' mlockall\nelasticsearch\tsoft\tmemlock\tunlimited\nelasticsearch\thard\tmemlock\tunlimited" >> /etc/security/limits.conf
 
+ES_PUBLISH_ADDRESS=`echo "$DOCKERCLOUD_IP_ADDRESS" | sed 's/\/.*//'`
 
 # Grab the UUID for the service of the ES masters
 if [[ $DOCKERCLOUD_SERVICE_HOSTNAME =~ .*-masters ]]; then
