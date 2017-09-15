@@ -1,34 +1,22 @@
-FROM centos:centos6
+FROM searchspring/elasticsearch_1_7_6
 
-# Update and Install Dependencies
 RUN \
-	yum update -y && \
-	yum install -y \
-	java-1.7.0-openjdk-devel.x86_64 \
-	tar
+  /usr/share/elasticsearch/bin/plugin install elasticsearch/elasticsearch-lang-mvel/1.7.0 && \
+  echo "vm.max_map_count = 262144" >> /etc/sysctl.d/99-elasticsearch.conf && \
+  echo "vm.swappiness = 1" >> /etc/sysctl.d/99-elasticsearch.conf && \
+  echo LimitMEMLOCK=infinity >> /usr/lib/systemd/system/elasticsearch.service
 
-# Set Java Home
-ENV JAVA_HOME /usr/lib/jvm/jre-1.7.0-openjdk.x86_64
+COPY templates /templates
+COPY docker/*.sh /usr/local/bin/
 
-# Install Elasticsearch 1.4.0
-RUN \
-	cd /tmp && \
-	curl 'https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.4.0.tar.gz' > elasticsearch-1.4.0.tar.gz && \
-	tar xvzf elasticsearch-1.4.0.tar.gz && \
-	rm -f elasticsearch-1.4.0.tar.gz && \
-	mv /tmp/elasticsearch-1.4.0 /usr/local/elasticsearch
+ENV \
+# https://www.elastic.co/guide/en/elasticsearch/guide/current/heap-sizing.html
+  ES_HEAP_SIZE=1024m \
+  CLUSTERNAME=elasticsearch \
+  DATANODE=true \
+  MASTERNODE=false
 
-# Install head and bigdesk
-RUN \
-	cd /usr/local/elasticsearch && \
-	bin/plugin --install mobz/elasticsearch-head && \
-	bin/plugin --install lukas-vlcek/bigdesk
+ENTRYPOINT [ "/usr/local/bin/entrypoint.sh" ]
 
-# Mount elasticsearch.yml config
-ADD config/elasticsearch.yml /usr/local/elasticsearch/config/elasticsearch.yml
+CMD ["elasticsearch"]
 
-# Define default command.
-ENTRYPOINT ["/usr/local/elasticsearch/bin/elasticsearch"]
-
-# Expose http port
-EXPOSE 9200

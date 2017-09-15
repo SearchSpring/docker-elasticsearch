@@ -1,22 +1,21 @@
 ################################### Cluster ###################################
 
-cluster.name: elasticsearch-cluster
-
+cluster.name: {{ .Env.CLUSTERNAME }} 
 #################################### Node #####################################
 
-node.name: elasticsearch-node
+node.name: {{ .Env.HOSTNAME }}
 node.max_local_storage_nodes: 1
 
 #################################### Index ####################################
 
 index.mapper.dynamic: true
-action.auto_create_index: true
+action.auto_create_index: false
 action.disable_delete_all_indices: true
 
 #################################### Paths ####################################
 
-path.conf: /usr/local/elasticsearch
-path.data: /data
+path.conf: /usr/share/elasticsearch/config
+path.data: /var/lib/elasticsearch
 path.logs: /var/log/elasticsearch
 
 #################################### Plugin ###################################
@@ -40,6 +39,10 @@ gateway.expected_nodes: 1
 ################################## Discovery ##################################
 
 
+discovery.zen.minimum_master_nodes: {{ .Env.MIN_MASTER_NODES }}
+discovery.zen.ping.multicast.enabled: false
+discovery.zen.ping.unicast.hosts: {{ .Env.ES_MASTER_NODES }}
+
 ################################## Slow Log ###################################
 
 
@@ -51,7 +54,11 @@ gateway.expected_nodes: 1
 
 ################################## Custom #####################################
 
+node.data: {{ .Env.DATANODE }}
+node.master: {{ .Env.MASTERNODE }}
+network.host: 0.0.0.0
+network.publish_host: {{ .Env.ES_PUBLISH_ADDRESS }}
 action.auto_create_index: false
-node.data: true
 script.disable_dynamic: false
-
+bootstrap.mlockall: true
+indices.cluster.send_refresh_mapping: false
