@@ -56,6 +56,6 @@ discovery.zen.ping.unicast.hosts: {{ .Env.ES_MASTER_NODES }}
 
 node.data: {{ .Env.DATANODE }}
 node.master: {{ .Env.MASTERNODE }}
-network.host: 0.0.0.0
+network.host: {{ default .Env.ADVERTISEHOST "0.0.0.0" }}
 script.disable_dynamic: false
 action.auto_create_index: false
